@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'react-native';
+import { Home } from './src/screens/Home';
+import { useEffect } from 'react';
+import { useFonts } from "expo-font";
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    'YoungSerif-Regular': require('./src/assets/fonts/YoungSerif-Regular.ttf')
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  },[])
+
+  if(!fontsLoaded) {
+    return null;
+  } else {
+    SplashScreen.hideAsync();
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar
+        barStyle        = {'dark-content'}
+        backgroundColor = {'transparent'}
+        translucent
+      />
+      <Home />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
